@@ -1,11 +1,12 @@
 require('dotenv').config();
 const express = require('express')
 const app = express()
-const port = process.env.PORT
+const port = process.env.PORT || 3000
 const  bcrypt =require("bcrypt")
 const User = require('./models/User')
 const mongoose =require('mongoose')
-
+const Product = require('./models/Product');
+const Cart = require('./models/cart')
 app.use(express.json())
 
 async function main() {
@@ -21,8 +22,68 @@ main()
 
 
 
+app.post("/products",async(req,res)=>{
+    try{
+const {title,price,stoke}=req.body
+if(!title || !price || !stoke) return res.status(401).json({
+    msg:"must add all data"
+})
+
+const user = User.findById(req.user.id)
+if(user.role=="admin"){
+const product = await Product.create({
+title,price,stoke
+});
+
+res.status(201).json({
+    msg:"created",
+    data:product
+})
+}
 
 
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({
+msg:"server error"
+        })
+    }
+})
+
+app.get("/products" , async(req , res)=>{
+    try{
+        
+        res.status(401).json({
+            msg:"finded",
+            data:product
+        })
+
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({
+            msg:"server error"
+        })
+    }
+})
+
+app.get("/products" , async(req , res)=>{
+    try{
+        const product =await Product.find(req.query)
+        res.status(401).json({
+            msg:"finded",
+            data:product
+        })
+
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({
+            msg:"server error"
+        })
+    }
+})
 
 
 
@@ -99,7 +160,24 @@ const user = await User.findOne({email});
 
 })
 
+// app.post('/cart' , async(req,res)=>{
+//     try{
+//         const {product,user,count}=req.body
+//         if(!product || !user || !count) return res.status(401).json({msg:"mising data"})
 
+//       const pro =await Product.find(id)
+//       if (pro.stock >= count ){
+//         const cart = await Cart.create({product,user,count})    
+//     res.status(201).json({msg:"created" , data:cart})
+//     }
+//     }
+//     catch(error){
+//         console.log(error)
+//         res.status(500).json({
+//             msg:"server error"
+//         })
+//     }
+// })
 
 
 app.listen(port,()=>{
