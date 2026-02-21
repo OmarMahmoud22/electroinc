@@ -89,4 +89,12 @@ const user = await User.findOne({email});
 
 }
 
-module.exports={regester,login,getuser}
+
+
+module.exports={
+    regester,
+    login,
+    getuser,
+    // add_product,
+    // get_product
+}

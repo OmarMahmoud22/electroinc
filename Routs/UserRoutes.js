@@ -6,7 +6,7 @@ const usercontroller = require("../Controller/UserController")
 router.post("/regester",usercontroller.regester)
 router.get("/",usercontroller.getuser)
 router.post("/login",usercontroller.login)
-
+router.get("/products",usercontroller.get_product)
 
 
 
