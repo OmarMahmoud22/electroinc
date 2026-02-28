@@ -1,13 +1,11 @@
 require('dotenv').config();
 const express = require('express')
 const app = express()
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 3000
 const mongoose =require('mongoose')
 const userRoutes = require("./Routs/UserRoutes")
 const productRoutes = require("./Routs/ProductRoutes")
-// const User = require('./models/User');
-// const Product = require('./models/Product');
-// const Cart = require('./models/cart')
+const cartRoutes = require("./Routs/CartRouters")
 app.use(express.json())
 
 
@@ -25,6 +23,8 @@ main()
 
 app.use('/',userRoutes);
 app.use('/',productRoutes)
+app.use('/api',cartRoutes)
+
 app.listen(port,()=>{
     console.log(`connected with${port}`)
 })
