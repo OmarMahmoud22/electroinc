@@ -31,21 +31,24 @@ const add_cart = async (req, res) => {
             });
         }
 
-        // add product or update quantity
-        const itemsIndex = Cart.items.findIndex(item => {
-            return item.Product.equals(productId);
+        // findindex =>array  do some think if true get me index  if not get me -1
+        const itemsIndex = cart.items.findIndex(item => {
+            //the condetion is => if item.produt === productid in cart
+            return item.Product.equals(productid);
         });
 
-        if(itemsIndex > -1) {
-            Cart.items[itemsIndex].quantity += quantity;
+        if (itemsIndex > -1) {
+            //cart.items[0].quantity += 3;
+            cart.items[itemsIndex].quantity += quantity;
         } else {
-            Cart.items.push({Product : productId, quantity : quantity});
+            cart.items.push({ Product: productid, quantity: quantity });
         }
 
         await cart.save();
-        productId.stock -= quantity ;
-        return res.status(201).json({message : 'Product added to cart', data : cart});
 
+        product.stock -= quantity;
+        await product.save();
+        
     } catch(error) {
         return res.status(500).json({message : error.message});
     }
